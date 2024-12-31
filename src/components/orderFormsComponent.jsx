@@ -1,57 +1,72 @@
-export default function OrderFormsComponent({pizzaSize, pizzaThin, userName, pizza, material, dataList}) {
-    console.log(dataList)
+export default function OrderFormsComponent({
+                                                pizzaSize,
+                                                pizzaThin,
+                                                userName,
+                                                pizza, oneMaterialPrice,
+                                                getselectedMaterialList,
+                                                dataList
+                                            }) {
+    let selectedMaterialList = [];
+
+    const onchangeListHandle = (e) => {
+        const item = e.target.value;
+        const checked = e.target.checked;
+        console.log(checked);
+        const findExist = selectedMaterialList.find(i => i === item);
+        if (findExist) {
+            selectedMaterialList = [...selectedMaterialList.filter(i => i !== item)];
+        } else {
+            selectedMaterialList = [...selectedMaterialList, item];
+        }
+        console.log("item", item);
+        console.log("selectedMaterialList", selectedMaterialList);
+        getselectedMaterialList([...selectedMaterialList]);
+    };
     return (
         <div className="m-auto">
-            <div className="mb-3">
-                <label className="form-label">Pizza Type</label>
-                <select onChange={pizzaThin} id="doughSelect" className="form-select">
+
+            <div className="mb-2">
+                <label className="form-label">Select an Pizza</label>
+                <select onChange={pizza} id="pizza" className="form-select">
                     {
                         dataList.pizaListData.map((i, key) => (
-                            <option key={key} value={i.name}>{i.name + ' - ' + i.price} TL</option>))
+                            <option key={key} value={key}>{i.name + ' - ' + i.price} TL</option>))
                     }
                 </select></div>
-            <div className="mb-3"><label htmlFor="sizeSelect" className="form-label">Boyut Seç</label>
-                <select onChange={pizzaSize} id="sizeSelect" className="form-select">
-                    {
-                        dataList.sizeListData.map((i, key) => (<option key={key} value={i}>{i}</option>))
-                    }
-                </select></div>
-            <div className="mb-3">
-                <label className="form-label">Hamur Kalınlığı Seç</label>
-                <select onChange={pizza} id="doughSelect" className="form-select">
-                    {
-                        dataList.thinListData.map((i, key) => (<option key={key} value={i}>{i}</option>))
-                    }
-                </select></div>
+            <div className="mb-2 row">
+                <div className="col-6"><label className="form-label">Pizza Size:</label>
+                    <select onChange={pizzaSize} id="sizeSelect" className="form-select">
+                        {
+                            dataList.sizeListData.map((i, key) => (<option key={key} value={i}>{i}</option>))
+                        }
+                    </select>
+                </div>
+                <div className="col-6">
+                    <label className="form-label">Choose your pizza thickness</label>
+                    <select onChange={pizzaThin} id="pizzaThin" className="form-select">
+                        {
+                            dataList.thinListData.map((i, key) => (<option key={key} value={i}>{i}</option>))
+                        }
+                    </select>
+                </div>
+
+            </div>
             <div className="mb-3"><label className="form-label">Ek Malzemeler</label>
-                <div className="row">
-                    <div className="col-6">
-                        <div className="form-check">
-                            <input className="form-check-input" id="pepperoni" type="checkbox"/><label
-                            className="form-check-label" htmlFor="pepperoni">Pepperoni</label></div>
-                        <div className="form-check">
-                            <input className="form-check-input" id="sausage"
-                                   type="checkbox"/>
-                            <label className="form-check-label" htmlFor="sausage">Sucuk</label></div>
-                        <div className="form-check">
-                            <input className="form-check-input" id="tomato" type="checkbox"/>
-                            <label className="form-check-label" htmlFor="tomato">Domates</label>
-                        </div>
-                    </div>
-                    <div className="col-6">
-                        <div className="form-check">
-                            <input className="form-check-input" id="cheese" type="checkbox"/>
-                            <label className="form-check-label" htmlFor="cheese">Peynir</label>
-                        </div>
-                        <div className="form-check">
-                            <input className="form-check-input" id="jalapeno" type="checkbox"/>
-                            <label className="form-check-label" htmlFor="jalapeno">Jalapeno</label>
-                        </div>
-                        <div className="form-check">
-                            <input className="form-check-input" id="pineapple" type="checkbox"/>
-                            <label className="form-check-label" htmlFor="pineapple">Ananas</label>
-                        </div>
-                    </div>
+                <div className="d-flex flex-wrap">
+                    {
+                        dataList.materialListData.map((item, key) => (
+                            <div key={key} className="form-check w-25">
+                                <label className="form-check-label">
+                                    <input onChange={onchangeListHandle} value={item}
+                                           className="form-check-input"
+                                           id={item} name={item}
+                                           type="checkbox"/><span>{item}</span>
+                                    <div style={{fontSize: "0.5em"}}>+ {oneMaterialPrice} TL</div>
+                                </label>
+                            </div>)
+                        )
+                    }
+
                 </div>
             </div>
             <div className="mb-3">

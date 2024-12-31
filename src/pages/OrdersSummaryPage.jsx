@@ -1,4 +1,4 @@
-import {basePrice} from "../datas";
+import {basePrice} from "../data/datas";
 
 export default function OrdersSummaryPage() {
     return (<div className="container">

@@ -4,11 +4,11 @@ import {
     basePrice,
     materialListData,
     minimumOrderPrice,
+    oneMaterialPrice,
     pizaListData,
-    priceMaterial,
     sizeListData,
     thinListData
-} from "../datas";
+} from "../data/datas";
 import React, {useEffect} from 'react'
 
 export default function OrderPage() {
@@ -20,19 +20,11 @@ export default function OrderPage() {
     const [pizza, pizzaSet] = React.useState("");
     const [materials, materialsSet] = React.useState("");
 
-    const dataList = {
-        materialListData,
-        sizeListData,
-        thinListData,
-        pizaListData
-    };
     const navigate = useNavigate();
 
     useEffect(() => {
-        errorListSet([]);
         isErrorControl();
-        console.log("list")
-    }, [pizzaSize, materials, pizza, pizzaThin, userName, orders]);
+    }, [pizzaSize, materials, pizza, pizzaThin, userName]);
 
     const onSubmitControl = () => {
         navigate('/orderSummary');
@@ -43,56 +35,54 @@ export default function OrderPage() {
     }
 
     const isErrorControl = () => {
-
-
-        const total = +getTotalPrice();
-        if (total < minimumOrderPrice) {
-            errorList.push("Required Minimum Price:" + minimumOrderPrice);
-        }
-        if (!userName || userName.length < 3) {
-            errorList.push("Empty UserName Minimum 3 Char:");
-        }
+        const errList = [];
         if (!pizza) {
-            errorList.push("Required type an pizza");
+            errList.push("Required pizza type");
         }
         if (!pizzaSize) {
-            errorList.push("Required pizzaSize");
+            errList.push("Required pizzaSize");
         }
         if (!pizzaThin) {
-            errorList.push("Required pizzaThin");
+            errList.push("Required pizzaThin");
         }
-        errorListSet(errorList);
+        if (pizza || materials.length) {
+            ordersSet([{price: pizza.price, name: pizza.name, mats: [...materials]}]);
+        }
+        const total = +getTotalPrice();
+        if (total < minimumOrderPrice) {
+            errList.push("Required Minimum Price:" + minimumOrderPrice);
+        }
+        if (!userName || userName.length < 3) {
+            errList.push("Empty UserName Minimum 3 Char:");
+        }
+        errorListSet((prev) => [...errList]);
     };
 
     const calculateMatPrice = (materials) => {
-        return (materials.length * priceMaterial).toFixed(2);
+        return (materials.length * oneMaterialPrice).toFixed(2);
     };
     const materialsHandle = (mat) => {
+        console.log(mat);
         materialsSet(mat)
     };
-    const pizzaSizeHandle = (size) => {
-        pizzaSizeSet(size)
-    };
-    const pizzaHandle = (type) => {
-        pizzaSet(pizza);
-    };
-    const userNameHandle = (e) => {
-        userNameSet(e.target.value)
-    };
-    let pizzaThinHandle = (e) => {
-        pizzaThinSet(e.target.value)
-    }
     return (<div className="OrderPage">
         <div className="container">
             <h2>Position Absolute Acı Pizza</h2>
             <p className="text-muted">{basePrice.toFixed(2)}₺</p>
             <p>Frontend: Tüm acıları position-absolute kullanıyoruz... İsteğinize göre çeşitlendirilebilir.</p>
-            <OrderFormsComponent dataList={dataList}
-                                 materials={materialsHandle}
-                                 pizzaThin={pizzaThinHandle}
-                                 pizzaSize={pizzaSizeHandle}
-                                 pizza={pizzaHandle}
-                                 userName={userNameHandle}></OrderFormsComponent>
+            <OrderFormsComponent
+                dataList={{
+                    materialListData,
+                    sizeListData,
+                    thinListData,
+                    pizaListData
+                }}
+                oneMaterialPrice={oneMaterialPrice}
+                getselectedMaterialList={materialsHandle}
+                pizzaThin={(e) => pizzaThinSet(e.target.value)}
+                pizzaSize={(e) => pizzaSizeSet(e.target.value)}
+                pizza={(e) => pizzaSet(pizaListData[e.target.value])}
+                userName={(e) => userNameSet(e.target.value)}></OrderFormsComponent>
             <table>
                 <tbody>
                 {
