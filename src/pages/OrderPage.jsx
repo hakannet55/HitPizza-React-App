@@ -83,7 +83,7 @@ export default function OrderPage() {
                 pizzaSize={(e) => pizzaSizeSet(e.target.value)}
                 pizza={(e) => pizzaSet(pizaListData[e.target.value])}
                 userName={(e) => userNameSet(e.target.value)}></OrderFormsComponent>
-            <table>
+            {!!orders.length && (<table className="table table-bordered">
                 <tbody>
                 {
                     orders.map(i =>
@@ -104,7 +104,8 @@ export default function OrderPage() {
                     <td></td>
                 </tr>
                 </tbody>
-            </table>
+            </table>)
+            }
             {errorList.length && <div className="alert alert-danger">
                 {errorList.map((i, key) => (<div key={key}>{i}</div>))}
             </div>
