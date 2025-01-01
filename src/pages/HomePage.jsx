@@ -18,7 +18,7 @@ export default function HomePage() {
     }
     return (
         <section className="HomePage d-flex justify-content-center align-content-start text-center"
-                 style={{height: '99vh'}}>
+                 style={{height: '99vh', ...(animatedClass ? {background: 'black'} : {})}}>
             <div className="mt-5">
                 <div className="m-auto">
                     <h1 className="text-center" style={{color: '#fff7d6', textShadow: '1px 1px 7px #1f1f1f'}}>Hit Pizza
@@ -33,7 +33,7 @@ export default function HomePage() {
                         onClick={clickedOrder}
                         href="#"
                         disabled={animatedClass}
-                        className="btn btn-lg btn-outline-light"
+                        className={!animatedClass ? "btn btn-lg btn-outline-light" : 'disabled w3-animate-left'}
                     >
                         {!animatedClass ? 'Sipariş Ver >>' : '...Please Wait...'}
                     </a>

@@ -1,11 +1,16 @@
 // src/components/NavBar.js
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import logo from '../images/logo.png'
 
 export default function HeaderComponent() {
-    return (<header className="App-header">
-        <img src={logo} className="App-logo" alt="logo"/>
+    const nv = useNavigate();
+
+    const navMain = () => {
+        nv("/");
+    }
+    return (<header className="App-header w3-animate-right">
+        <img onClick={navMain} src={logo} className="App-logo pointer" alt="logo"/>
         <nav className="d-flex justify-content-end gap-2 align-items-center">
             <Link
                 className="btn btn-danger"
