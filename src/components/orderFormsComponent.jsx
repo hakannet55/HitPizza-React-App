@@ -4,7 +4,7 @@ export default function OrderFormsComponent({
                                                 userName,
                                                 pizza, oneMaterialPrice,
                                                 getselectedMaterialList,
-                                                dataList
+                                                dataList, orders
                                             }) {
     let selectedMaterialList = [];
 
@@ -54,7 +54,7 @@ export default function OrderFormsComponent({
             <div className="mb-3"><label className="form-label">Ek Malzemeler</label>
                 <div className="d-flex flex-wrap">
                     {
-                        dataList.materialListData.map((item, key) => (
+                        (orders || []).length > 0 && dataList.materialListData.map((item, key) => (
                             <div key={key} className="form-check w-25">
                                 <label className="form-check-label">
                                     <input onChange={onchangeListHandle} value={item}

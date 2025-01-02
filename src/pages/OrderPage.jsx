@@ -19,6 +19,7 @@ export default function OrderPage() {
     const [pizzaSize, pizzaSizeSet] = React.useState("");
     const [pizza, pizzaSet] = React.useState("");
     const [materials, materialsSet] = React.useState("");
+    const [quantity, quantitySet] = React.useState(1);
 
     const navigate = useNavigate();
 
@@ -31,7 +32,8 @@ export default function OrderPage() {
     }
 
     const getTotalPrice = () => {
-        return orders.reduce((acc, i) => acc + i.total, 0).toFixed(2) || 0;
+        const total = orders.reduce((acc, i) => acc + (Number(i.total) || 0), 0).toFixed(2) || 0;
+        return total * quantity;
     }
 
     const isErrorControl = () => {
@@ -64,7 +66,7 @@ export default function OrderPage() {
     };
     const materialsHandle = (mat) => {
         console.log(mat);
-        materialsSet(mat)
+        materialsSet(mat);
     };
     return (<div className="OrderPage">
         <div className="container">
@@ -79,6 +81,7 @@ export default function OrderPage() {
                         thinListData,
                         pizaListData
                     }}
+                    orders={orders}
                     oneMaterialPrice={oneMaterialPrice}
                     getselectedMaterialList={materialsHandle}
                     pizzaThin={(e) => pizzaThinSet(e.target.value)}
@@ -111,6 +114,15 @@ export default function OrderPage() {
                 {errorList.map((i, key) => (<div key={key}>{i}</div>))}
             </div>
             }
+            <div className="btn-group">
+                <button onClick={() => quantitySet((pre) => pre < 2 ? 1 : pre - 1)} className="btn btn-warning"
+                        type="button">-
+                </button>
+                <input className="btn" style={{width: '50px'}} name="pcs" value={quantity}/>
+                <button onClick={() => quantitySet((pre) => pre + 1)} className="btn btn-warning"
+                        type="button">+
+                </button>
+            </div>
             <div className="d-flex justify-content-between align-items-center"><span
                 className="fs-4 fw-bold">Toplam: {getTotalPrice()}₺</span>
                 <p>Required Minimum Price:{minimumOrderPrice}</p>

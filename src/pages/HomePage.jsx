@@ -14,7 +14,7 @@ export default function HomePage() {
         animatedClassSet("item_animatedDrop");
         setTimeout(() => {
             nv("/newOrder");
-        }, 3200);
+        }, 3000);
     }
     return (
         <section className="HomePage d-flex justify-content-center align-content-start text-center"
