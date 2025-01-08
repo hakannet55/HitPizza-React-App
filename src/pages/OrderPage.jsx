@@ -12,6 +12,7 @@ import {
 import React, {useEffect} from 'react'
 
 export default function OrderPage() {
+    const [totalPrices, totalPricesSet] = React.useState(0);
     const [orders, ordersSet] = React.useState([]);
     const [errorList, errorListSet] = React.useState([]);
     const [userName, userNameSet] = React.useState("");
@@ -31,8 +32,9 @@ export default function OrderPage() {
         navigate('/orderSummary');
     }
 
-    const getTotalPrice = () => {
-        const total = orders.reduce((acc, i) => acc + (Number(i.total) || 0), 0).toFixed(2) || 0;
+    const getTotalPrice = (orderValList) => {
+        console.log(1, orderValList);
+        const total = orderValList.reduce((acc, i) => acc + (Number(i.total) || 0), 0).toFixed(2) || 0;
         return total * quantity;
     }
 
@@ -48,9 +50,10 @@ export default function OrderPage() {
             errList.push("Required pizzaThin");
         }
         if (pizza || materials.length) {
+            console.log("ordersSet");
             ordersSet([{price: pizza.price, name: pizza.name, mats: [...materials]}]);
         }
-        const total = +getTotalPrice();
+        const total = +getTotalPrice(orders);
         if (total < minimumOrderPrice) {
             errList.push("Required Minimum Price:" + minimumOrderPrice);
         }
@@ -58,7 +61,8 @@ export default function OrderPage() {
             errList.push("Empty UserName Minimum 3 Char:");
         }
         errorListSet((prev) => [...errList]);
-        console.log(orders);
+        totalPricesSet(getTotalPrice(orders));
+        console.log("orders", orders);
     };
 
     const calculateMatPrice = (materials) => {
@@ -73,6 +77,7 @@ export default function OrderPage() {
             <h2 className="w3-animate-left">Position Absolute Acı Pizza</h2>
             <p className="text-muted">{basePrice.toFixed(2)}₺</p>
             <p>Frontend: Tüm acıları position-absolute kullanıyoruz... İsteğinize göre çeşitlendirilebilir.</p>
+            {!pizza && (<h2 className="disabled">İlk önce Pizza Türü Seçmelisiniz!</h2>)}
             <div className="w3-animate-left">
                 <OrderFormsComponent
                     dataList={{
@@ -86,9 +91,12 @@ export default function OrderPage() {
                     getselectedMaterialList={materialsHandle}
                     pizzaThin={(e) => pizzaThinSet(e.target.value)}
                     pizzaSize={(e) => pizzaSizeSet(e.target.value)}
-                    pizza={(e) => pizzaSet(pizaListData[e.target.value])}
+                    pizza={(e) => {
+                        pizzaSet(pizaListData[e.target.value])
+                    }}
                     userName={(e) => userNameSet(e.target.value)}></OrderFormsComponent>
             </div>
+            {JSON.stringify(orders)}
             {!!orders.length && (<table className="table table-bordered">
                 <tbody>
                 {
@@ -116,15 +124,15 @@ export default function OrderPage() {
             }
             <div className="btn-group">
                 <button onClick={() => quantitySet((pre) => pre < 2 ? 1 : pre - 1)} className="btn btn-warning"
-                        type="button">-
+                        type="button" disabled={!pizza}>-
                 </button>
-                <input className="btn" style={{width: '50px'}} name="pcs" value={quantity}/>
-                <button onClick={() => quantitySet((pre) => pre + 1)} className="btn btn-warning"
+                <input disabled={!pizza} className="btn" style={{width: '50px'}} name="pcs" value={quantity}/>
+                <button disabled={!pizza} onClick={() => quantitySet((pre) => pre + 1)} className="btn btn-warning"
                         type="button">+
                 </button>
             </div>
             <div className="d-flex justify-content-between align-items-center"><span
-                className="fs-4 fw-bold">Toplam: {getTotalPrice()}₺</span>
+                className="fs-4 fw-bold">Toplam: {totalPrices}₺</span>
                 <p>Required Minimum Price:{minimumOrderPrice}</p>
                 <button disabled={!!errorList.length} type="button" onClick={onSubmitControl}
                         className="btn btn-warning">Sipariş Ver
