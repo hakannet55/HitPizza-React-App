@@ -66,6 +66,10 @@ a[disabled], a[disabled]:hover {
     position: fixed;
     width: 80px;
     height: auto;
+    opacity: 0.8;
+    background: #dca1a163;
+    border-radius: 100%;
+    box-shadow: inset 5px 5px 14px 2px #fffafd5e;
 }
 
 .item_animatedDrop {

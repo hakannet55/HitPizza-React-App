@@ -24,20 +24,20 @@ export default function OrderFormsComponent({
     };
     return (
         <div className="m-auto">
-
             <div className="mb-2">
                 <label className="form-label">Select an Pizza</label>
                 <select onChange={pizza} id="pizza" className="form-select">
                     {
                         dataList.pizaListData.map((i, key) => (
-                            <option key={key} value={key}>{i.name + ' - ' + i.price} TL</option>))
+                            <option key={key} value={key}>{i.name + ' ' + i.price} TL</option>))
                     }
-                </select></div>
+                </select>
+            </div>
             <div className="mb-2 row">
                 <div className="col-6"><label className="form-label">Pizza Size:</label>
                     <select onChange={pizzaSize} id="sizeSelect" className="form-select">
                         {
-                            dataList.sizeListData.map((i, key) => (<option key={key} value={i}>{i}</option>))
+                            dataList.sizeListData.map((i, key) => (<option key={key} value={key + 1}>{i}</option>))
                         }
                     </select>
                 </div>

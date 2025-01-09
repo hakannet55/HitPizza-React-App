@@ -26,7 +26,13 @@ export default function OrderPage() {
 
     useEffect(() => {
         isErrorControl();
+        totalPricesSet(getTotalPrice(orders));
     }, [pizzaSize, materials, pizza, pizzaThin, userName]);
+
+
+    useEffect(() => {
+        totalPricesSet(getTotalPrice(orders));
+    }, [orders]);
 
     const onSubmitControl = () => {
         navigate('/orderSummary');
@@ -34,7 +40,11 @@ export default function OrderPage() {
 
     const getTotalPrice = (orderValList) => {
         console.log(1, orderValList);
-        const total = orderValList.reduce((acc, i) => acc + (Number(i.total) || 0), 0).toFixed(2) || 0;
+        const total = orderValList.reduce((acc, i) => {
+            const sizePrice = (i.size || 0) * 2.25;
+            const matsPrice = oneMaterialPrice * i.mats.length || 0;
+            return acc + matsPrice + (Number(i.price) * (sizePrice || 1));
+        }, 0).toFixed(2) || 0;
         return total * quantity;
     }
 
@@ -50,8 +60,8 @@ export default function OrderPage() {
             errList.push("Required pizzaThin");
         }
         if (pizza || materials.length) {
-            console.log("ordersSet");
-            ordersSet([{price: pizza.price, name: pizza.name, mats: [...materials]}]);
+            console.log("materials", materials);
+            ordersSet([{price: pizza.price, name: pizza.name, size: pizzaSize || 0, mats: [...materials]}]);
         }
         const total = +getTotalPrice(orders);
         if (total < minimumOrderPrice) {
@@ -61,7 +71,6 @@ export default function OrderPage() {
             errList.push("Empty UserName Minimum 3 Char:");
         }
         errorListSet((prev) => [...errList]);
-        totalPricesSet(getTotalPrice(orders));
         console.log("orders", orders);
     };
 
@@ -69,8 +78,13 @@ export default function OrderPage() {
         return (materials.length * oneMaterialPrice).toFixed(2);
     };
     const materialsHandle = (mat) => {
-        console.log(mat);
-        materialsSet(mat);
+        console.log(mat, materials);
+        if (mat && materials && materials.length && materials.some(i => i === mat[0])) {
+            mat = materials.filter(i => i != mat[0]);
+            materialsSet([...mat]);
+        } else {
+            materialsSet([...materials, ...mat]);
+        }
     };
     return (<div className="OrderPage">
         <div className="container">

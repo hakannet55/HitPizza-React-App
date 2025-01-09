@@ -11,4 +11,4 @@ export const pizaListData = [
     {"name": "GalacticPizza", "price": 35},
     {"name": "SpicyMixPizza", "price": 40}
 ];
-export const materialListData = ["Pepperoni", "Mushroom", "Sausage", "Cheesy", "Tomatoes", "Jalapeno", "Ananas"];
+export const materialListData = ["Pepperoni", "Mushroom", "Sausage", "Tomatoes", "Jalapeno"];
