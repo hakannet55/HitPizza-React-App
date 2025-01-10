@@ -103,7 +103,7 @@ export default function OrderPage() {
             <h2 className="w3-animate-left">{pizza.name || 'Seçilmemiş'} Pizza</h2>
             <p className="text-muted">{(pizza.price || 0).toFixed(2)}₺</p>
             <p>Frontend: Tüm acıları position-absolute kullanıyoruz... İsteğinize göre çeşitlendirilebilir.</p>
-            {!pizza && (<h2 className="disabled">İlk önce Pizza Türü Seçmelisiniz!</h2>)}
+            {!pizza && (<h4 className="disabled text-warning">İlk önce Pizza Türü Seçmelisiniz!</h4>)}
             <div className="w3-animate-left">
                 <OrderFormsComponent
                     dataList={{
