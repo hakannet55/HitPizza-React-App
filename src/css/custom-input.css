@@ -1,0 +1,45 @@
+/* styles.css */
+input[type=checkbox] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+input[type=checkbox] + span {
+    position: relative;
+    padding-left: 25px;
+    cursor: pointer;
+    user-select: none;
+}
+
+input[type=checkbox] + span:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    background-color: #eee;
+    border-radius: 3px;
+}
+
+input[type=checkbox]:checked + span:before {
+    background-color: #eeb354;
+}
+
+input[type=checkbox] + span:after {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 3px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+    display: none;
+}
+
+input[type=checkbox]:checked + span:after {
+    display: block;
+}

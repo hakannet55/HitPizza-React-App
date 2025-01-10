@@ -60,7 +60,7 @@ export default function OrderFormsComponent({
                                     <input onChange={onchangeListHandle} value={item}
                                            className="form-check-input"
                                            id={item} name={item}
-                                           type="checkbox"/><span>{item}</span>
+                                           type="checkbox"/><span className="checkmark"></span><span>{item}</span>
                                     <div style={{fontSize: "0.5em"}}>+ {oneMaterialPrice} TL</div>
                                 </label>
                             </div>)

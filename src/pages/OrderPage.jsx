@@ -1,15 +1,8 @@
 import OrderFormsComponent from "../components/orderFormsComponent";
 import {useNavigate} from "react-router-dom";
-import {
-    basePrice,
-    materialListData,
-    minimumOrderPrice,
-    oneMaterialPrice,
-    pizaListData,
-    sizeListData,
-    thinListData
-} from "../data/datas";
 import React, {useEffect} from 'react'
+import useFetchDatas from "../hooks/useFetchDatas";
+import '../css/custom-input.css'
 
 export default function OrderPage() {
     const [totalPrices, totalPricesSet] = React.useState(0);
@@ -21,22 +14,26 @@ export default function OrderPage() {
     const [pizza, pizzaSet] = React.useState("");
     const [materials, materialsSet] = React.useState("");
     const [quantity, quantitySet] = React.useState(1);
-
+    const [responseApi] = useFetchDatas("path/to/url/api");
     const navigate = useNavigate();
 
     useEffect(() => {
-        isErrorControl();
-        totalPricesSet(getTotalPrice(orders));
+        if (responseApi) {
+            isErrorControl();
+            totalPricesSet(getTotalPrice(orders));
+        }
     }, [pizzaSize, materials, pizza, pizzaThin, userName]);
 
-
     useEffect(() => {
-        totalPricesSet(getTotalPrice(orders));
+        if (responseApi) {
+            totalPricesSet(getTotalPrice(orders));
+        }
     }, [orders]);
 
-    const onSubmitControl = () => {
-        navigate('/orderSummary');
+    if (!responseApi) {
+        return (<div className="d-flex justify-content-center align-content-center">Loading...</div>)
     }
+
 
     const getTotalPrice = (orderValList) => {
         console.log(1, orderValList);
@@ -47,8 +44,10 @@ export default function OrderPage() {
         }, 0).toFixed(2) || 0;
         return total * quantity;
     }
-
     const isErrorControl = () => {
+        if (!responseApi) {
+            return
+        }
         const errList = [];
         if (!pizza) {
             errList.push("Required pizza type");
@@ -74,13 +73,26 @@ export default function OrderPage() {
         console.log("orders", orders);
     };
 
+    const {
+        materialListData,
+        minimumOrderPrice,
+        oneMaterialPrice,
+        pizaListData,
+        sizeListData,
+        thinListData
+    } = responseApi;
+
+    const onSubmitControl = () => {
+        navigate('/orderSummary');
+    }
+
     const calculateMatPrice = (materials) => {
         return (materials.length * oneMaterialPrice).toFixed(2);
     };
     const materialsHandle = (mat) => {
         console.log(mat, materials);
         if (mat && materials && materials.length && materials.some(i => i === mat[0])) {
-            mat = materials.filter(i => i != mat[0]);
+            mat = materials.filter(i => i !== mat[0]);
             materialsSet([...mat]);
         } else {
             materialsSet([...materials, ...mat]);
@@ -88,8 +100,8 @@ export default function OrderPage() {
     };
     return (<div className="OrderPage">
         <div className="container">
-            <h2 className="w3-animate-left">Position Absolute Acı Pizza</h2>
-            <p className="text-muted">{basePrice.toFixed(2)}₺</p>
+            <h2 className="w3-animate-left">{pizza.name || 'Seçilmemiş'} Pizza</h2>
+            <p className="text-muted">{(pizza.price || 0).toFixed(2)}₺</p>
             <p>Frontend: Tüm acıları position-absolute kullanıyoruz... İsteğinize göre çeşitlendirilebilir.</p>
             {!pizza && (<h2 className="disabled">İlk önce Pizza Türü Seçmelisiniz!</h2>)}
             <div className="w3-animate-left">

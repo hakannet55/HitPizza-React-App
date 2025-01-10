@@ -35,7 +35,7 @@ code {
 }
 
 .HomePage {
-    background-image: url('./images/home-banner.png');
+    background-image: url('../images/home-banner.png');
     background-size: cover;
     background-position: center;
 }
@@ -270,3 +270,5 @@ a[disabled], a[disabled]:hover {
         animation-timing-function: ease-out;
     }
 }
+
+
