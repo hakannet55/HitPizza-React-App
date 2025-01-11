@@ -4,10 +4,10 @@ import {Link, useNavigate} from 'react-router-dom';
 import logo from '../images/logo.png'
 
 export default function HeaderComponent() {
-    const nv = useNavigate();
+    const toNavigate = useNavigate();
 
     const navMain = () => {
-        nv("/");
+        toNavigate("/");
     }
     return (<header className="App-header w3-animate-right">
         <img onClick={navMain} src={logo} className="App-logo pointer" alt="logo"/>
@@ -16,13 +16,13 @@ export default function HeaderComponent() {
                 className="btn btn-danger"
                 to="/"
             >
-                AnaSayfa
+                AnaSayfa &#9750;
             </Link>
             <Link
                 className="btn btn-danger"
                 to="/newOrder"
             >
-                Sipariş Ver
+                Sipariş Ver &#9745;
             </Link>
             <Link
                 className="btn btn-danger"

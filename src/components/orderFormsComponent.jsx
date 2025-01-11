@@ -55,13 +55,13 @@ export default function OrderFormsComponent({
                 <div className="d-flex flex-wrap">
                     {
                         (orders || []).length > 0 && dataList.materialListData.map((item, key) => (
-                            <div key={key} className="form-check w-25">
+                            <div key={key} className="form-check col-sm-6 col-md-3 col-lg-3">
                                 <label className="form-check-label">
                                     <input onChange={onchangeListHandle} value={item}
                                            className="form-check-input"
                                            id={item} name={item}
                                            type="checkbox"/><span className="checkmark"></span><span>{item}</span>
-                                    <div style={{fontSize: "0.5em"}}>+ {oneMaterialPrice} TL</div>
+                                    <p className="info">+ {oneMaterialPrice} TL</p>
                                 </label>
                             </div>)
                         )

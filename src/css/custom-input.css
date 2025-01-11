@@ -5,11 +5,32 @@ input[type=checkbox] {
     cursor: pointer;
 }
 
+.form-check {
+    padding-left: 0px !important;
+}
+
+.form-check p.info {
+    font-size: 0.6em;
+    text-align: center;
+}
+
 input[type=checkbox] + span {
     position: relative;
     padding-left: 25px;
     cursor: pointer;
     user-select: none;
+}
+
+label {
+    padding: 6px;
+    margin: 5px;
+}
+
+.form-check-label:hover {
+    background: lightgoldenrodyellow;
+    cursor: pointer;
+    color: #94632c;
+    border-radius: 7px;
 }
 
 input[type=checkbox] + span:before {

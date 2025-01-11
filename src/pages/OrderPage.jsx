@@ -22,7 +22,7 @@ export default function OrderPage() {
             isErrorControl();
             totalPricesSet(getTotalPrice(orders));
         }
-    }, [pizzaSize, materials, pizza, pizzaThin, userName]);
+    }, [pizzaSize, materials, pizza, pizzaThin, quantity, userName]);
 
     useEffect(() => {
         if (responseApi) {
@@ -117,12 +117,11 @@ export default function OrderPage() {
                     getselectedMaterialList={materialsHandle}
                     pizzaThin={(e) => pizzaThinSet(e.target.value)}
                     pizzaSize={(e) => pizzaSizeSet(e.target.value)}
+                    userName={(e) => userNameSet(e.target.value)}
                     pizza={(e) => {
                         pizzaSet(pizaListData[e.target.value])
-                    }}
-                    userName={(e) => userNameSet(e.target.value)}></OrderFormsComponent>
+                    }}></OrderFormsComponent>
             </div>
-            {JSON.stringify(orders)}
             {!!orders.length && (<table className="table table-bordered">
                 <tbody>
                 {
@@ -130,7 +129,7 @@ export default function OrderPage() {
                         (<React.Fragment key={key}>
                             <tr>
                                 <td>{i.name}</td>
-                                <td>x1</td>
+                                <td>x{quantity}</td>
                                 <td>{i.price}</td>
                             </tr>
                             <tr>
