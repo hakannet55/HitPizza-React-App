@@ -22,13 +22,13 @@ export default function HeaderComponent() {
                 className="btn btn-danger"
                 to="/newOrder"
             >
-                Sipariş Ver &#9745;
+                Sipariş Ver &#10043;
             </Link>
             <Link
                 className="btn btn-danger"
                 to="/orderSummary"
             >
-                Siparişlerim
+                Siparişlerim &#9782;
             </Link>
         </nav>
     </header>);
